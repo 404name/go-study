@@ -1,0 +1,8 @@
+{MenuLevel: 0, Hidden: false, ParentId: "0", Path: "web", Name: "web", Component: "view/routerHolder.vue", Sort: 7, Meta: Meta{Title: "平台管理", Icon: "grid"} },
+
+{{range .}}
+{MenuLevel: 0, Hidden: false, ParentId: "{{.ParentId}}", Path: "{{.Name}}", Name: "{{.Name}}", Component: "view/{{.Name}}/{{.Name}}.vue", Sort: 0, Meta: Meta{Title: "{{.Describe}}", Icon: "tools"} },
+{{end}}
+    
+    
+    

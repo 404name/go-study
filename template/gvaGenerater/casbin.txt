@@ -1,0 +1,10 @@
+
+{{range .}}
+		{Ptype: "p", V0: "888", V1: "/{{.Name}}/find{{.Uname}}", V2: "GET"},
+		{Ptype: "p", V0: "888", V1: "/{{.Name}}/update{{.Uname}}", V2: "PUT"},
+		{Ptype: "p", V0: "888", V1: "/{{.Name}}/create{{.Uname}}", V2: "POST"},
+		{Ptype: "p", V0: "888", V1: "/{{.Name}}/get{{.Uname}}List", V2: "GET"},
+		{Ptype: "p", V0: "888", V1: "/{{.Name}}/delete{{.Uname}}", V2: "DELETE"},
+		{Ptype: "p", V0: "888", V1: "/{{.Name}}/delete{{.Uname}}ByIds", V2: "DELETE"},
+{{end}}
+

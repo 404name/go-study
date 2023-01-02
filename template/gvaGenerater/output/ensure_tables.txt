@@ -1,0 +1,14 @@
+
+	web.Article{},
+
+	web.Activity{},
+
+	web.ActivityRecord{},
+
+	web.Introduce{},
+
+	web.Message{},
+
+	web.Moments{},
+
+	web.OrganizationInformation{},

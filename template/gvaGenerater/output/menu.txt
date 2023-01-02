@@ -1,0 +1,20 @@
+{MenuLevel: 0, Hidden: false, ParentId: "0", Path: "web", Name: "web", Component: "view/routerHolder.vue", Sort: 7, Meta: Meta{Title: "平台管理", Icon: "grid"} },
+
+
+{MenuLevel: 0, Hidden: false, ParentId: "30", Path: "article", Name: "article", Component: "view/article/article.vue", Sort: 0, Meta: Meta{Title: "文章", Icon: "tools"} },
+
+{MenuLevel: 0, Hidden: false, ParentId: "30", Path: "activity", Name: "activity", Component: "view/activity/activity.vue", Sort: 0, Meta: Meta{Title: "活动", Icon: "tools"} },
+
+{MenuLevel: 0, Hidden: false, ParentId: "30", Path: "activityRecord", Name: "activityRecord", Component: "view/activityRecord/activityRecord.vue", Sort: 0, Meta: Meta{Title: "活动记录", Icon: "tools"} },
+
+{MenuLevel: 0, Hidden: false, ParentId: "30", Path: "introduce", Name: "introduce", Component: "view/introduce/introduce.vue", Sort: 0, Meta: Meta{Title: "内推记录", Icon: "tools"} },
+
+{MenuLevel: 0, Hidden: false, ParentId: "30", Path: "message", Name: "message", Component: "view/message/message.vue", Sort: 0, Meta: Meta{Title: "信息", Icon: "tools"} },
+
+{MenuLevel: 0, Hidden: false, ParentId: "30", Path: "moments", Name: "moments", Component: "view/moments/moments.vue", Sort: 0, Meta: Meta{Title: "动态", Icon: "tools"} },
+
+{MenuLevel: 0, Hidden: false, ParentId: "30", Path: "organizationInformation", Name: "organizationInformation", Component: "view/organizationInformation/organizationInformation.vue", Sort: 0, Meta: Meta{Title: "组织信息", Icon: "tools"} },
+
+    
+    
+    

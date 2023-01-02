@@ -1,0 +1,11 @@
+{{range .}}
+    {ApiGroup: "{{.Describe}}", Method: "POST", Path: "/{{.Name}}/create{{.Uname}}", Description: "新增{{.Describe}}表"},
+		{ApiGroup: "{{.Describe}}", Method: "DELETE", Path: "/{{.Name}}/delete{{.Uname}}", Description: "删除{{.Describe}}表"},
+		{ApiGroup: "{{.Describe}}", Method: "DELETE", Path: "/{{.Name}}/delete{{.Uname}}ByIds", Description: "批量删除{{.Describe}}表"},
+		{ApiGroup: "{{.Describe}}", Method: "PUT", Path: "/{{.Name}}/update{{.Uname}}", Description: "更新{{.Describe}}表"},
+		{ApiGroup: "{{.Describe}}", Method: "GET", Path: "/{{.Name}}/find{{.Uname}}", Description: "根据ID获取{{.Describe}}表"},
+		{ApiGroup: "{{.Describe}}", Method: "GET", Path: "/{{.Name}}/get{{.Uname}}List", Description: "获取{{.Describe}}列表"},
+{{end}}
+    
+    
+    
