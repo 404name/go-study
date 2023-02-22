@@ -1,0 +1,32 @@
+{{range .}}
+
+// {{.MethodName}}
+// @Tags      {{.TagsName}}
+// @Summary   {{.Summary}}
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param data query {{.Req}} true "分页获取Moments列表"
+// @Success   0   {object}  response.Response{data={{.Resp}},msg=string} "分页获取社团列表,返回包括列表,总数,页码,每页数量"
+// @Router    {{.Router}} [GET]
+func ({{.Tags}} *{{.Tags}}) {{.MethodName}}(c *gin.Context) {
+
+	var pageInfo webReq.MomentsSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, total, err := momentsService.GetMomentsInfoList(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+{{end}}

@@ -5,6 +5,8 @@
 
 	web.ActivityRecord{},
 
+	web.Comment{},
+
 	web.Introduce{},
 
 	web.Message{},

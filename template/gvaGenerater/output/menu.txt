@@ -7,6 +7,8 @@
 
 {MenuLevel: 0, Hidden: false, ParentId: "30", Path: "activityRecord", Name: "activityRecord", Component: "view/activityRecord/activityRecord.vue", Sort: 0, Meta: Meta{Title: "活动记录", Icon: "tools"} },
 
+{MenuLevel: 0, Hidden: false, ParentId: "30", Path: "comment", Name: "comment", Component: "view/comment/comment.vue", Sort: 0, Meta: Meta{Title: "评论", Icon: "tools"} },
+
 {MenuLevel: 0, Hidden: false, ParentId: "30", Path: "introduce", Name: "introduce", Component: "view/introduce/introduce.vue", Sort: 0, Meta: Meta{Title: "内推记录", Icon: "tools"} },
 
 {MenuLevel: 0, Hidden: false, ParentId: "30", Path: "message", Name: "message", Component: "view/message/message.vue", Sort: 0, Meta: Meta{Title: "信息", Icon: "tools"} },

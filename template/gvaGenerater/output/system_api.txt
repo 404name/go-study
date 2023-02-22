@@ -20,6 +20,13 @@
 		{ApiGroup: "活动记录", Method: "GET", Path: "/activityRecord/findActivityRecord", Description: "根据ID获取活动记录表"},
 		{ApiGroup: "活动记录", Method: "GET", Path: "/activityRecord/getActivityRecordList", Description: "获取活动记录列表"},
 
+    {ApiGroup: "评论", Method: "POST", Path: "/comment/createComment", Description: "新增评论表"},
+		{ApiGroup: "评论", Method: "DELETE", Path: "/comment/deleteComment", Description: "删除评论表"},
+		{ApiGroup: "评论", Method: "DELETE", Path: "/comment/deleteCommentByIds", Description: "批量删除评论表"},
+		{ApiGroup: "评论", Method: "PUT", Path: "/comment/updateComment", Description: "更新评论表"},
+		{ApiGroup: "评论", Method: "GET", Path: "/comment/findComment", Description: "根据ID获取评论表"},
+		{ApiGroup: "评论", Method: "GET", Path: "/comment/getCommentList", Description: "获取评论列表"},
+
     {ApiGroup: "内推记录", Method: "POST", Path: "/introduce/createIntroduce", Description: "新增内推记录表"},
 		{ApiGroup: "内推记录", Method: "DELETE", Path: "/introduce/deleteIntroduce", Description: "删除内推记录表"},
 		{ApiGroup: "内推记录", Method: "DELETE", Path: "/introduce/deleteIntroduceByIds", Description: "批量删除内推记录表"},

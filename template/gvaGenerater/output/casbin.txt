@@ -21,6 +21,13 @@
 		{Ptype: "p", V0: "888", V1: "/activityRecord/deleteActivityRecord", V2: "DELETE"},
 		{Ptype: "p", V0: "888", V1: "/activityRecord/deleteActivityRecordByIds", V2: "DELETE"},
 
+		{Ptype: "p", V0: "888", V1: "/comment/findComment", V2: "GET"},
+		{Ptype: "p", V0: "888", V1: "/comment/updateComment", V2: "PUT"},
+		{Ptype: "p", V0: "888", V1: "/comment/createComment", V2: "POST"},
+		{Ptype: "p", V0: "888", V1: "/comment/getCommentList", V2: "GET"},
+		{Ptype: "p", V0: "888", V1: "/comment/deleteComment", V2: "DELETE"},
+		{Ptype: "p", V0: "888", V1: "/comment/deleteCommentByIds", V2: "DELETE"},
+
 		{Ptype: "p", V0: "888", V1: "/introduce/findIntroduce", V2: "GET"},
 		{Ptype: "p", V0: "888", V1: "/introduce/updateIntroduce", V2: "PUT"},
 		{Ptype: "p", V0: "888", V1: "/introduce/createIntroduce", V2: "POST"},
