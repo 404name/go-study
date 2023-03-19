@@ -18,4 +18,5 @@
 └───template            go模板
     └───gvaGenerater
         └───output
+└───ui                  一些go的ui
 ```
