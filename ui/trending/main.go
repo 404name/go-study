@@ -8,12 +8,17 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+
+	"github.com/knipferrc/teacup/icons"
+	"github.com/knipferrc/teacup/image"
+	"github.com/knipferrc/teacup/statusbar"
 )
 
 var baseUrl string = `https://api.iwyu.com/API/baiduresou/`
@@ -53,6 +58,7 @@ func (d rowDelegate) Spacing() int {
 }
 
 func (d rowDelegate) Update(msg tea.Msg, m *list.Model) tea.Cmd {
+
 	return nil
 }
 
@@ -82,11 +88,13 @@ func (i *Trending) FilterValue() string {
 }
 
 type tui struct {
-	spinner  *spinner.Model
-	list     *list.Model
-	selected *Trending
-	loading  bool
-	err      error
+	statusbar statusbar.Bubble
+	image     image.Bubble
+	spinner   *spinner.Model
+	list      list.Model
+	selected  *Trending
+	loading   bool
+	err       error
 }
 
 // 用bubbletea写的一个终端界面，用来选择搜索结果，然后打开链接
@@ -103,14 +111,40 @@ func newTuiModel() *tui {
 	l.Styles.PaginationStyle = paginationStyle
 	l.Styles.HelpStyle = helpStyle
 
+	statusbarModel := statusbar.New(
+		statusbar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Dark: "#ffffff", Light: "#ffffff"},
+			Background: lipgloss.AdaptiveColor{Dark: "#cc241d", Light: "#cc241d"},
+		},
+		statusbar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Dark: "#ffffff", Light: "#ffffff"},
+			Background: lipgloss.AdaptiveColor{Dark: "#3c3836", Light: "#3c3836"},
+		},
+		statusbar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Dark: "#ffffff", Light: "#ffffff"},
+			Background: lipgloss.AdaptiveColor{Dark: "#A550DF", Light: "#A550DF"},
+		},
+		statusbar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Dark: "#ffffff", Light: "#ffffff"},
+			Background: lipgloss.AdaptiveColor{Dark: "#6124DF", Light: "#6124DF"},
+		},
+	)
+	statusbarModel.SetContent(
+		"测试",
+		"我是进度条",
+		"123",
+		"测试",
+	)
 	s := spinner.New()
 	s.Spinner = spinner.Dot
 	s.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("205"))
 	// TODO Implement a progressive loading list
 	return &tui{
-		spinner: &s,
-		list:    &l,
-		loading: true,
+		image:     image.New(true, true, lipgloss.AdaptiveColor{Light: "#000000", Dark: "#ffffff"}),
+		statusbar: statusbarModel,
+		spinner:   &s,
+		list:      l,
+		loading:   true,
 	}
 }
 func (m *tui) Selected() *Trending {
@@ -144,10 +178,49 @@ func (m *tui) Init() tea.Cmd {
 		return nil
 	}
 	// 注册加载中的动画和初始化事件
-	return tea.Batch(loading, init)
+	return tea.Batch(loading, init, m.image.SetFileName("logo1.png"))
+}
+
+// 下载远程图片到当前目录下cache文件夹
+func (m *tui) downloadImg(url string) tea.Cmd {
+	// 获取图片文件名
+	filename := filepath.Base(url)
+	// 拼接本地缓存路径
+	cachePath := filepath.Join("cache", filename)
+	if _, err := os.Stat("cache"); os.IsNotExist(err) {
+		err = os.Mkdir("cache", 0755)
+		if err != nil {
+			return func() tea.Msg { return err }
+		}
+	}
+	// 如果本地已经存在该文件，直接返回文件路径
+	// if _, err := os.Stat(cachePath); err == nil {
+	// 	return m.image.SetFileName(cachePath)
+	// }
+
+	// 否则，下载图片并保存到本地缓存
+	resp, err := http.Get(url)
+	if err != nil {
+		return func() tea.Msg { return err }
+	}
+	defer resp.Body.Close()
+
+	out, err := os.Create(cachePath)
+	if err != nil {
+		return func() tea.Msg { return err }
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, resp.Body)
+	if err != nil {
+		return func() tea.Msg { return err }
+	}
+
+	return m.image.SetFileName(cachePath)
 }
 
 func (m *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
@@ -156,13 +229,16 @@ func (m *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.selected = (*Trending)(m.list.SelectedItem().(*Trending))
 				return m, tea.Quit
 			}
+		case " ":
+			// cmd := m.image.SetFileName(fmt.Sprintf("./logo%d.png", m.list.Index()%2))
+			// m.image.SetBorderColor(lipgloss.AdaptiveColor{Dark: "#F25D94", Light: "#F25D94"})
+			return m, m.downloadImg(m.list.SelectedItem().(*Trending).Img)
 		}
 	case tea.WindowSizeMsg:
-		if m.list == nil {
-			return m, nil
-		}
-		m.list.SetSize(msg.Width, msg.Height)
-		return m, nil
+		m.statusbar.SetSize(msg.Width)
+		m.list.SetSize(msg.Width/2, msg.Height-m.statusbar.Height)
+		resizeImgCmd := m.image.SetSize(msg.Width-m.list.Width(), msg.Height-m.statusbar.Height)
+		return m, tea.Batch(resizeImgCmd)
 	case spinner.TickMsg:
 		// 用来显示加载中的动画
 		if m.loading == false {
@@ -171,13 +247,27 @@ func (m *tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		spinner, cmd := m.spinner.Update(msg)
 		m.spinner = &spinner
 		return m, cmd
+
 	case errMsg:
 		m.err = msg
 		return m, nil
 	}
-	lst, cmd := m.list.Update(msg)
-	m.list = &lst
-	return m, cmd
+
+	m.list, _ = m.list.Update(msg)
+	m.image, _ = m.image.Update(msg)
+
+	if m.loading {
+		return m, nil
+	}
+
+	logoText := fmt.Sprintf("%s %s", icons.IconDef["dir"].GetGlyph(), "百度热搜")
+	m.statusbar.SetContent(
+		m.list.SelectedItem().(*Trending).Word,
+		m.list.SelectedItem().(*Trending).Desc,
+		fmt.Sprintf("%d/%d", m.list.Index(), len(m.list.Items())),
+		logoText,
+	)
+	return m, nil
 }
 
 func (m *tui) View() string {
@@ -185,9 +275,13 @@ func (m *tui) View() string {
 		return m.err.Error()
 	}
 	if m.loading {
-		return fmt.Sprintf("\n\n   %s 正在加载数据\n\n", m.spinner.View())
+		return fmt.Sprintf("\n\n   %s 正在加载数据\n %s \n", m.spinner.View(), m.statusbar.View())
 	} else {
-		return "\n" + m.list.View()
+		return "\n" +
+			lipgloss.JoinVertical(lipgloss.Top,
+				lipgloss.JoinHorizontal(lipgloss.Left, m.list.View(), m.image.View()),
+				m.statusbar.View(),
+			)
 	}
 }
 

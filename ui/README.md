@@ -8,3 +8,4 @@ BubbleTea是主的项目，然后市面有很多UI组件可以直接搜索`TUI c
 官方组件：github.com/charmbracelet/bubbletea
 第三方组件：github.com/charmbracelet/bubbles
 第三方组间：github.com/charmbracelet/bubbles
+第三方工具库：https://github.com/knipferrc/teacup(图片、markdown，pdf，icons)

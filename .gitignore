@@ -1,3 +1,6 @@
+/ui/trending/cache/*
+
+
 .vscode
 # Build
 bulid/
